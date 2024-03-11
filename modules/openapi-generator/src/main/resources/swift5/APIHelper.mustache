@@ -52,9 +52,9 @@ import Vapor{{/useVapor}}
         guard let value = value else { return nil }
         if let value = value as? any RawRepresentable {
             return "\(value.rawValue)"
-        } else if let date = value as? OpenAPIDateWithoutTime {
+        {{#useCustomDateWithoutTime}}} else if let date = value as? OpenAPIDateWithoutTime {
             return "\(date.encodeToJSON())"
-        } else {
+        {{/useCustomDateWithoutTime}}} else {
             return "\(value)"
         }
     }
@@ -64,10 +64,10 @@ import Vapor{{/useVapor}}
             return collection
                 .compactMap { value in convertAnyToString(value) }
                 .joined(separator: ",")
-        }
+        }{{#useCustomDateWithoutTime}}
         if let date = source as? OpenAPIDateWithoutTime {
             return date.encodeToJSON()
-        }
+        }{{/useCustomDateWithoutTime}}
         return source
     }
 
