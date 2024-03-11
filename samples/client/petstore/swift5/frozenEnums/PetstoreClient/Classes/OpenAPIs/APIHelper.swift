@@ -51,6 +51,8 @@ public struct APIHelper {
         guard let value = value else { return nil }
         if let value = value as? any RawRepresentable {
             return "\(value.rawValue)"
+        } else if let date = value as? OpenAPIDateWithoutTime {
+            return "\(date.encodeToJSON())"
         } else {
             return "\(value)"
         }
@@ -61,6 +63,9 @@ public struct APIHelper {
             return collection
                 .compactMap { value in convertAnyToString(value) }
                 .joined(separator: ",")
+        }
+        if let date = source as? OpenAPIDateWithoutTime {
+            return date.encodeToJSON()
         }
         return source
     }
